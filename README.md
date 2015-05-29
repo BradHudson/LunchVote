@@ -1,0 +1,1 @@
+This is the application that the chrome extension communicates with when reading and writing to dynamo db.
