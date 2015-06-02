@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'aws-sdk'
+require 'rubygems'
 require 'dotenv'
 Dotenv.load
 
