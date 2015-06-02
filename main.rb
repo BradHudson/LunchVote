@@ -12,11 +12,12 @@ def dynamo_client
 end
 
 def creds
+  r = Random.new
       {
         table_name: 'test',
         item: {
-          "hk" => "g",
-    "name" => "joe"
+          "hk" => DateTime.now.to_s + r.rand(10...42).to_s,
+    "name" => "ssss"
   }
       }
     end
