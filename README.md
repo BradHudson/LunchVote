@@ -1,1 +1,1 @@
-This is the application that the chrome extension communicates with when reading and writing to dynamo db.
+This is the application that the chrome extension communicates with when reading and writing to dynamo db. As of now, the sinatra app works with the extension by just using a 'GET' call. It then takes the data and sends it to AWS. As of now, it is not hosted but works locally. Run 'ruby main.rb' after unloading the chrome extension and this will store in my dynamodb.
