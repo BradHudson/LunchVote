@@ -17,7 +17,7 @@ def creds
         table_name: 'test',
         item: {
           "hk" => DateTime.now.to_s + r.rand(10...42).to_s,
-    "name" => "ssss"
+    "name" => params[:choice]
   }
       }
     end
