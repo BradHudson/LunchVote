@@ -37,7 +37,8 @@ Yelp.client.search('Norcross GA', { term: 'food', limit: 5 })
 end
 
 get '/' do
-  yelp_request.businesses[0].name
+  response = yelp_request.businesses[0].name
+  response.to_json
 end
 
 get "/vote" do
