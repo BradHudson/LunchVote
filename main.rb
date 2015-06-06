@@ -2,6 +2,7 @@ require 'sinatra'
 require 'aws-sdk'
 require 'rubygems'
 require 'dotenv'
+require 'yelp'
 Dotenv.load
 
 def dynamo_client
@@ -22,8 +23,21 @@ def creds
       }
     end
 
+def yelp_request
+  if Yelp.client.configuration.nil?
+    Yelp.client.configure do |config|
+    config.consumer_key = ENV['CONSUMER_KEY']
+    config.consumer_secret = ENV['CONSUMER_SECRET']
+    config.token = ENV['TOKEN']
+    config.token_secret = ENV['TOKEN_SECRET']
+    end
+  end
+
+Yelp.client.search('Norcross GA', { term: 'food', limit: 5 })
+end
+
 get '/' do
-  "Just Do It"
+  yelp_request.businesses[0].name
 end
 
 get "/vote" do
