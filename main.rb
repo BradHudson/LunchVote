@@ -49,20 +49,16 @@ table_name: "test", # required
 # end
 
 get '/' do
-  i = 10
-
-  while i < 42
-    resp = dynamo_client.get_item(
-  # required
-  table_name: "test",
-  # required
-  key: {
-    "hk" => Date.today.to_s + i.to_s, 
-  })
-  resp.data
-end
 end
 
 get "/vote" do
  response = dynamo_client.update_item(creds).data rescue nil
+  resp = dynamo_client.get_item(
+  # required
+  table_name: "test",
+  # required
+  key: {
+    "hk" => Date.today.to_s 
+  })
+  resp.data
 end
