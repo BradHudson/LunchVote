@@ -2,7 +2,7 @@ require 'sinatra'
 require 'aws-sdk'
 require 'rubygems'
 require 'dotenv'
-require 'yelp'
+# require 'yelp'
 Dotenv.load
 
 def dynamo_client
@@ -13,44 +13,56 @@ def dynamo_client
 end
 
 def creds
-  r = Random.new
-      {
-        table_name: 'test',
-        item: {
-          "hk" => DateTime.now.to_s + r.rand(10...42).to_s,
-    "name" => params[:choice]
+  {
+table_name: "test", # required
+  key: { # required
+    "hk" => Date.today.to_s, # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
+  },
+  attribute_updates: {
+    params[:choice] => {
+      value: 1, # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
+      action: "ADD" # accepts ADD, PUT, DELETE
+    }
   }
-      }
+}
+
+  # r = Random.new
+  #     {
+  #     #    table_name: 'test',
+  #     #    item: {
+  #     #      "hk" => '2015-06-1335'#Date.today.to_s + r.rand(10...42).to_s,
+  #     # params[:choice] => params[:choice]
+  #     }
     end
 
-def yelp_request
-  if Yelp.client.configuration.nil?
-    Yelp.client.configure do |config|
-    config.consumer_key = ENV['CONSUMER_KEY']
-    config.consumer_secret = ENV['CONSUMER_SECRET']
-    config.token = ENV['TOKEN']
-    config.token_secret = ENV['TOKEN_SECRET']
-    end
-  end
+# def yelp_request
+#   if Yelp.client.configuration.nil?
+#     Yelp.client.configure do |config|
+#     config.consumer_key = ENV['CONSUMER_KEY']
+#     config.consumer_secret = ENV['CONSUMER_SECRET']
+#     config.token = ENV['TOKEN']
+#     config.token_secret = ENV['TOKEN_SECRET']
+#     end
+#   end
 
-Yelp.client.search('Norcross GA', { term: 'food', limit: 5 })
-end
+# Yelp.client.search('Norcross GA', { term: 'food', limit: 5 })
+# end
 
 get '/' do
-  response = yelp_request.businesses[0].name
-  response.to_json
+  i = 10
+
+  while i < 42
+    resp = dynamo_client.get_item(
+  # required
+  table_name: "test",
+  # required
+  key: {
+    "hk" => Date.today.to_s + i.to_s, 
+  })
+  resp.data
+end
 end
 
 get "/vote" do
-  # @place = params[:place]
-  # @date = DateTime.now
- response = dynamo_client.put_item(creds).data rescue nil
-# resp = dynamo_client.get_item(
-#   # required
-#   table_name: "test",
-#   # required
-#   key: {
-#     "hk" => "h", #<Hash,Array,String,Numeric,Boolean,nil,IO,Set>,
-#   })
-#   resp.data
+ response = dynamo_client.update_item(creds).data rescue nil
 end
