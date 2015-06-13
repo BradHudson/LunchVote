@@ -61,5 +61,6 @@ get "/vote" do
     "hk" => Date.today.to_s 
   })
   resp.data
-  JSON.parse(resp.to_json)
+  result = JSON.parse(resp.to_json)
+  result.key
 end
