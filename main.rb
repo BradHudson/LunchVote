@@ -16,11 +16,11 @@ def creds
   {
 table_name: "test", # required
   key: { # required
-    "hk" => "NEWHASHV2", # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
+    "hk" => Date.today.to_s, # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
   },
   attribute_updates: {
-    "itemcount" => {
-      value: 8, # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
+    params[:choice] => {
+      value: 1, # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
       action: "ADD" # accepts ADD, PUT, DELETE
     }
   }
