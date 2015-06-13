@@ -13,14 +13,26 @@ def dynamo_client
 end
 
 def creds
-  r = Random.new
-      {
-        table_name: 'test',
-        item: {
-          "hk" => DateTime.now.to_s + r.rand(10...42).to_s,
-    "name" => params[:choice]
+  {
+table_name: "test", # required
+  key: { # required
+    "hk" => "NEWHASHV2", # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
+  },
+  attribute_updates: {
+    "itemcount" => {
+      value: 8, # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
+      action: "ADD" # accepts ADD, PUT, DELETE
+    }
   }
-      }
+}
+
+  # r = Random.new
+  #     {
+  #     #    table_name: 'test',
+  #     #    item: {
+  #     #      "hk" => '2015-06-1335'#Date.today.to_s + r.rand(10...42).to_s,
+  #     # params[:choice] => params[:choice]
+  #     }
     end
 
 # def yelp_request
@@ -37,20 +49,20 @@ def creds
 # end
 
 get '/' do
-  # response = yelp_request.businesses[0].name
-  # response.to_json
+  i = 10
+
+  while i < 42
+    resp = dynamo_client.get_item(
+  # required
+  table_name: "test",
+  # required
+  key: {
+    "hk" => Date.today.to_s + i.to_s, 
+  })
+  resp.data
+end
 end
 
 get "/vote" do
-  # @place = params[:place]
-  # @date = DateTime.now
- response = dynamo_client.put_item(creds).data rescue nil
-# resp = dynamo_client.get_item(
-#   # required
-#   table_name: "test",
-#   # required
-#   key: {
-#     "hk" => "h", #<Hash,Array,String,Numeric,Boolean,nil,IO,Set>,
-#   })
-#   resp.data
+ response = dynamo_client.update_item(creds).data rescue nil
 end
